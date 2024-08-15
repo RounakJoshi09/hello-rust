@@ -94,10 +94,42 @@ fn remove_bill(bills: &mut Vec<Bill>) {
     let result = io::stdin().read_line(&mut bill_name);
 
     if result.is_ok() {
-        let bill = bills.iter().position(|bill| bill.name == bill_name);
+        let bill = bills
+            .iter()
+            .position(|bill| bill.name.to_lowercase() == bill_name.to_lowercase());
         if bill.is_some() {
             bills.remove(bill.unwrap_or_else(|| 0));
             println!("* Bill Removed Successfully *");
+            println!("")
+        } else {
+            println!("Bill with name :{:?} not found, Try Again", bill_name)
+        }
+    }
+}
+
+fn edit_bill(bills: &mut Vec<Bill>) {
+    println!("Enter bill name you want to edit : ");
+
+    let mut bill_name = String::new();
+    let result = io::stdin().read_line(&mut bill_name);
+
+    if result.is_ok() {
+        let bill = bills
+            .iter()
+            .position(|bill| bill.name.to_lowercase() == bill_name.to_lowercase());
+
+        if bill.is_some() {
+            let index = bill.unwrap_or_default();
+            println!("Info of the bill you want to edit ");
+            bills[index].print_bill();
+
+            println!("Enter Details of the new bill");
+
+            let new_bill = Bill::generate_new_bill();
+
+            bills[index] = new_bill;
+
+            println!("* Bill Editted Successfully *");
             println!("")
         } else {
             println!("Bill with name :{:?} not found, Try Again", bill_name)
@@ -110,7 +142,8 @@ fn show_info() {
     println!("1. Add Bill");
     println!("2. View Bill");
     println!("3. Remove Bill");
-    println!("4. Close");
+    println!("4. Edit Bill");
+    println!("5. Close");
 }
 
 fn main() {
@@ -137,6 +170,10 @@ fn main() {
                 show_info();
             }
             "4" => {
+                edit_bill(&mut bills);
+                show_info();
+            }
+            "5" => {
                 break;
             }
             _ => (),
