@@ -3,4 +3,9 @@ name = "hello-rust"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+name = "activity"
+path = "src/activitylib.rs"
+
 [dependencies]
+chrono = "0.4.38"
