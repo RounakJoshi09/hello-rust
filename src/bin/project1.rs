@@ -87,11 +87,30 @@ fn view_bill(bills: &Vec<Bill>) {
     }
 }
 
+fn remove_bill(bills: &mut Vec<Bill>) {
+    println!("Enter bill name to be removed : ");
+
+    let mut bill_name = String::new();
+    let result = io::stdin().read_line(&mut bill_name);
+
+    if result.is_ok() {
+        let bill = bills.iter().position(|bill| bill.name == bill_name);
+        if bill.is_some() {
+            bills.remove(bill.unwrap_or_else(|| 0));
+            println!("* Bill Removed Successfully *");
+            println!("")
+        } else {
+            println!("Bill with name :{:?} not found, Try Again", bill_name)
+        }
+    }
+}
+
 fn show_info() {
     println!("Welcome to Billing Calc");
     println!("1. Add Bill");
     println!("2. View Bill");
-    println!("3. Close");
+    println!("3. Remove Bill");
+    println!("4. Close");
 }
 
 fn main() {
@@ -106,6 +125,7 @@ fn main() {
             "1" => {
                 let bill = Bill::generate_new_bill();
                 bills.push(bill);
+                println!("** Bill Added Successfully **");
                 show_info();
             }
             "2" => {
@@ -113,6 +133,10 @@ fn main() {
                 show_info();
             }
             "3" => {
+                remove_bill(&mut bills);
+                show_info();
+            }
+            "4" => {
                 break;
             }
             _ => (),
