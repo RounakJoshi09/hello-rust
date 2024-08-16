@@ -12,6 +12,12 @@ struct Triangle {
     side3: f64,
 }
 
+impl Default for Square {
+    fn default() -> Self {
+        return Self { side: 50.0 };
+    }
+}
+
 impl Mensuration for Square {
     fn perimeter(&self) -> f64 {
         return self.side * 4.0;
@@ -34,7 +40,7 @@ fn check_box_fit(shape: impl Mensuration) -> bool {
 }
 
 fn main() {
-    let square = Square { side: 40.3 };
+    let square = Square::default();
     let triangle = Triangle {
         side1: 10.2,
         side2: 20.3,
